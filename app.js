@@ -2,10 +2,13 @@ const express = require("express");
 const app = express();
 const colors = require("colors");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const { SensorModel, UserModel } = require("./models");
 const { Response } = require("./classes");
-const bodyParser = require("body-parser");
 require("dotenv").config();
+
+app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
