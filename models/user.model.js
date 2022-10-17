@@ -8,6 +8,12 @@ const schema = new mongoose.Schema({
   password: {
     type: String,
   },
+  name: {
+    type: String,
+  },
+  thumbnail: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("User", schema, "User");

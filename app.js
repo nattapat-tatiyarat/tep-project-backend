@@ -23,14 +23,22 @@ app.get("/login", async (req, res) => {
     if (!req.query.username || !req.query.password) {
       return res.json(new Response(400, "missing query parameters", null));
     }
-    const user = await UserModel.findOne({
-      username: req.query.username,
-      password: req.query.password,
-    });
+    let option = {
+      username: 1,
+      name: 1,
+      thumbnail: 1,
+    };
+    const user = await UserModel.findOne(
+      {
+        username: req.query.username,
+        password: req.query.password,
+      },
+      option
+    );
     if (!user) {
       return res.json(new Response(404, "no record found", false));
     }
-    return res.json(new Response(200, "success", true));
+    return res.json(new Response(200, "success", user));
   } catch (err) {
     return res.json(new Response(500, err.message, null));
   }
