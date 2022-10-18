@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const colors = require("colors");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { SensorModel, UserModel } = require("./models");
@@ -91,6 +90,34 @@ app.put("/sensor", async (req, res) => {
       return res.json(new Response(404, "no record found", null));
     }
     return res.json(new Response(200, "success", null));
+  } catch (err) {
+    return res.json(new Response(500, err.message, null));
+  }
+});
+
+app.get("/sensor-pagination", async (req, res) => {
+  try {
+    const page = req.query.page;
+    const limit = req.query.limit;
+    const skip = page * limit - limit;
+    const rows = await SensorModel.find(
+      {},
+      {},
+      {
+        skip: skip,
+        limit: limit,
+        sort: {
+          updatedAt: 1,
+        },
+      }
+    );
+    const number = await SensorModel.countDocuments();
+    return res.json(
+      new Response(200, "success", {
+        total_documents: number,
+        data: rows,
+      })
+    );
   } catch (err) {
     return res.json(new Response(500, err.message, null));
   }
