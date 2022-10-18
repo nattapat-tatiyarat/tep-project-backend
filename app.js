@@ -107,7 +107,7 @@ app.get("/sensor-pagination", async (req, res) => {
         skip: skip,
         limit: limit,
         sort: {
-          updatedAt: 1,
+          createdAt: -1,
         },
       }
     );
