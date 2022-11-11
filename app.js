@@ -54,11 +54,12 @@ app.get("/sensor", async (req, res) => {
 
 app.get("/graph-data/:field", async (req, res) => {
   try {
+    let sort = { created_at: 1 };
     let option = {};
     option[req.params.field] = 1;
-    option["updatedAt"] = 1;
+    option["createdAt"] = 1;
 
-    const rows = await SensorModel.find({}, option);
+    const rows = await SensorModel.find({}, option).sort(sort);
 
     return res.json(new Response(200, "success", rows));
   } catch (err) {
