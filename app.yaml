@@ -1,0 +1,7 @@
+runtime: nodejs16
+
+env_variables:
+  MONGOOSE_USER: "TU"
+  MONGOOSE_PASS: "1475369zZ"
+  MONGOOSE_ADDRESS: "cluster0.k0gwskt.mongodb.net"
+  MONGOOSE_DB: "TU"
