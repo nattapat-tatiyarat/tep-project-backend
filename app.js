@@ -17,40 +17,7 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
-app.get("/login", async (req, res) => {
-  try {
-    if (!req.query.username || !req.query.password) {
-      return res.json(new Response(400, "missing query parameters", null));
-    }
-    let option = {
-      username: 1,
-      name: 1,
-      thumbnail: 1,
-    };
-    const user = await UserModel.findOne(
-      {
-        username: req.query.username,
-        password: req.query.password,
-      },
-      option
-    );
-    if (!user) {
-      return res.json(new Response(404, "no record found", false));
-    }
-    return res.json(new Response(200, "success", user));
-  } catch (err) {
-    return res.json(new Response(500, err.message, null));
-  }
-});
-
-app.get("/sensor", async (req, res) => {
-  try {
-    const rows = await SensorModel.find();
-    return res.json(new Response(200, "success", rows));
-  } catch (err) {
-    return res.json(new Response(500, err.message, null));
-  }
-});
+//
 
 app.get("/graph-data/:field", async (req, res) => {
   try {
@@ -67,30 +34,16 @@ app.get("/graph-data/:field", async (req, res) => {
   }
 });
 
-app.post("/sensor", async (req, res) => {
+app.get("/sensor", async (req, res) => {
   try {
-    const sensor = new SensorModel(req.body);
-    await sensor.save();
-
-    return res.json(new Response(200, "success", sensor));
-  } catch (err) {
-    return res.json(new Response(500, err.message, null));
-  }
-});
-
-app.put("/sensor", async (req, res) => {
-  try {
-    const update = await SensorModel.findOneAndUpdate(
-      {
-        _id: req.body.id,
-      },
-      req.body
+    const rows = await SensorModel.find();
+    const number = await SensorModel.countDocuments();
+    return res.json(
+      new Response(200, "success", {
+        total_documents: number,
+        data: rows,
+      })
     );
-
-    if (!update) {
-      return res.json(new Response(404, "no record found", null));
-    }
-    return res.json(new Response(200, "success", null));
   } catch (err) {
     return res.json(new Response(500, err.message, null));
   }
@@ -106,12 +59,10 @@ app.get("/sensor-pagination", async (req, res) => {
       {},
       {
         skip: skip,
-        limit: limit,
-        sort: {
-          createdAt: -1,
-        },
+        limit: limit
       }
     );
+   
     const number = await SensorModel.countDocuments();
     return res.json(
       new Response(200, "success", {

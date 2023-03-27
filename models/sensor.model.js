@@ -3,29 +3,10 @@ const Schema = mongoose.Schema;
 
 const schema = new mongoose.Schema(
   {
-    co2: {
-      type: Number,
-    },
-    temp: {
-      type: Number,
-    },
-    humidity: {
-      type: Number,
-    },
-    light: {
-      type: Number,
-    },
-    soilMoisture: {
-      type: Number,
-    },
-    soilNPK: {
-      type: Number,
-    },
-    soilPH: {
-      type: Number,
+    payload: {
+      type: Array,
     },
   },
-  { timestamps: true }
 );
 
-module.exports = mongoose.model("Sensor", schema, "Sensor");
+module.exports = mongoose.model("myCollection", schema, "myCollection");
